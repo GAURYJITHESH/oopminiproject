@@ -1,9 +1,5 @@
 import java.util.*;
 
-int count1=0;
-int count2=0;
-int count3=0;
-
 class Vehicle{
 	String numPlate;
 }
@@ -95,6 +91,16 @@ class Retrieve extends Park{
 
     }
 }
+class Myexceptions extends Exception{
+    private String errorcode;
+    Myexceptions(String err){
+        errorcode=err;
+    }
+    String getcode(){
+        return errorcode;
+    }
+}
+
 class p{
 Myexceptions parkingfull=new Myexceptions("Slot not available");
 void check(int count1,int count2, int count3) throws Myexceptions{
@@ -111,11 +117,13 @@ System.out.print(e.getcode());
 }
 
 
-class OopProject{
-	public static void main(String args[]){
+class oopproject{
+	public static void main(String args[]) throws Myexceptions{
 		Scanner sc = new Scanner(System.in);
 		p exc=new p();
-		
+		int count1=0;
+		int count2=0;
+		int count3=0;
 		System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
 		String type=sc.nextLine();
 		switch(type){
@@ -126,7 +134,7 @@ class OopProject{
 			case "b":
 				Vehicle bike = new Bike();
 				count2++;
-				break;
+                break;
 			case "t":
 				Vehicle truck = new Truck();
 				count3++;
@@ -138,14 +146,4 @@ class OopProject{
 		exc.check(count1,count2,count3);
 
 	}
-}
-
-class Myexceptions extends Exception{
-    private String errorcode;
-    Myexceptions(String err){
-        errorcode=err;
-    }
-    String getcode(){
-        return errorcode;
-    }
 }

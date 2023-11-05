@@ -18,8 +18,15 @@ class Building{
 	int slot;
 }
 
-class OOP{
-	public static void main(String args[]){
-		
-	}
+class Park extends Building{
+    int entryTime;
+    Park(int time){
+        entryTime=time;
+    }
+   
+    void entryy(){
+        System.out.println("enter the entry time");
+        entryTime=sc.nextInt();
+    }
+
 }

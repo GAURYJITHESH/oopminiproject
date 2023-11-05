@@ -1,5 +1,5 @@
 import java.util.*;
-Scanner sc = new Scanner(System.in);
+
 
 class Vehicle{
 	String numPlate;
@@ -26,6 +26,7 @@ class Park extends Building{
     }
    
     void entryy(){
+	Scanner sc = new Scanner(System.in);
         System.out.println("enter the entry time");
         entryTime=sc.nextInt();
     }

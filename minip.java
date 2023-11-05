@@ -33,6 +33,29 @@ class Park extends Building{
 
 }
 
+class OopProject{
+	public static void main(String args[]){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
+		String type=sc.nextLine();
+		switch(type){
+			case "c":
+				Vehicle car = new Car();
+				break;
+			case "b":
+				Vehicle bike = new Bike();
+				break;
+			case "t":
+				Vehicle truck = new Truck();
+				break;
+			default:
+				System.out.println("invalid");
+				return;
+		}
+
+	}
+}
+
 class Myexceptions extends Exception{
     private String errorcode;
     Myexceptions(String err){

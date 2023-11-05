@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 class Vehicle{
 	String numPlate;
 }
@@ -34,6 +33,7 @@ class Park extends Building{
 }
 
 class Retrieve extends Park{
+	Scanner sc=new Scanner(System.in);
     int exitTime;
     int payment=20;
     int hours;

@@ -109,7 +109,7 @@ class ParkingFloor {
 
         if (slots != null) {
             for (ParkingSlot slot : slots) {
-                if (slot.isOccupied() && slot.retrieveVehicle().numPlate.equals(numPlate)) {
+                if (slot.isOccupied() && slot.retrieveVehicle().numPlate.equalsIgnoreCase(numPlate)) {
                     int hours = (exitTime - slot.retrieveVehicle().entryTime) / 100; // Assuming entry time is always before 1500 hours
                     int basePrice = (vehicleType.equals("Bike")) ? 20 : ((vehicleType.equals("Car")) ? 50 : 100);
                     int additionalFee = (hours <= 4) ? (hours * 20) : 1000;
@@ -137,15 +137,15 @@ class ParkingLot {
         }
     }
 
-    void parkCar(Car car, int floorNumber, int slotNumber, int entryTime) throws Exception {
+    void parkCar(Car car, int floorNumber, int slotNumber) throws Exception {
         floors[floorNumber].parkCar(car, slotNumber);
     }
 
-    void parkBike(Bike bike, int floorNumber, int slotNumber, int entryTime) throws Exception {
+    void parkBike(Bike bike, int floorNumber, int slotNumber) throws Exception {
         floors[floorNumber].parkBike(bike, slotNumber);
     }
 
-    void parkTruck(Truck truck, int floorNumber, int slotNumber, int entryTime) throws Exception {
+    void parkTruck(Truck truck, int floorNumber, int slotNumber) throws Exception {
         floors[floorNumber].parkTruck(truck, slotNumber);
     }
 
@@ -190,7 +190,7 @@ public class OopProject {
                         int floorNumber = sc.nextInt();
                         System.out.println("Enter Slot Number (0-11):");
                         int slotNumber = sc.nextInt();
-                        parkingLot.parkCar(car, floorNumber, slotNumber, carEntryTime);
+                        parkingLot.parkCar(car, floorNumber, slotNumber);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -209,7 +209,7 @@ public class OopProject {
                         int floorNumber = sc.nextInt();
                         System.out.println("Enter Slot Number (0-14):");
                         int slotNumber = sc.nextInt();
-                        parkingLot.parkBike(bike, floorNumber, slotNumber, bikeEntryTime);
+                        parkingLot.parkBike(bike, floorNumber, slotNumber);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -228,7 +228,7 @@ public class OopProject {
                         int floorNumber = sc.nextInt();
                         System.out.println("Enter Slot Number (0-2):");
                         int slotNumber = sc.nextInt();
-                        parkingLot.parkTruck(truck, floorNumber, slotNumber, truckEntryTime);
+                        parkingLot.parkTruck(truck, floorNumber, slotNumber);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }

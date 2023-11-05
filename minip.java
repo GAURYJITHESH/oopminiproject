@@ -32,3 +32,13 @@ class Park extends Building{
     }
 
 }
+
+class Myexceptions extends Exception{
+    private String errorcode;
+    Myexceptions(String err){
+        errorcode=err;
+    }
+    String getcode(){
+        return errorcode;
+    }
+}

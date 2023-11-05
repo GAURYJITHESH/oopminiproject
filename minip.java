@@ -117,7 +117,7 @@ System.out.print(e.getcode());
 }
 
 
-class oopproject{
+class OopProject{
 	public static void main(String args[]) throws Myexceptions{
 		Scanner sc = new Scanner(System.in);
 		p exc=new p();

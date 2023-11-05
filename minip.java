@@ -1,5 +1,9 @@
 import java.util.*;
 
+int count1=0;
+int count2=0;
+int count3=0;
+
 class Vehicle{
 	String numPlate;
 }
@@ -111,9 +115,7 @@ class OopProject{
 	public static void main(String args[]){
 		Scanner sc = new Scanner(System.in);
 		p exc=new p();
-		int count1=0;
-		int count2=0;
-		int count3=0;
+		
 		System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
 		String type=sc.nextLine();
 		switch(type){
@@ -123,8 +125,8 @@ class OopProject{
 				break;
 			case "b":
 				Vehicle bike = new Bike();
-				break;
 				count2++;
+				break;
 			case "t":
 				Vehicle truck = new Truck();
 				count3++;

@@ -111,23 +111,29 @@ class OopProject{
 	public static void main(String args[]){
 		Scanner sc = new Scanner(System.in);
 		p exc=new p();
-		exc.check(count1,count2,count3);
+		int count1=0;
+		int count2=0;
+		int count3=0;
 		System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
 		String type=sc.nextLine();
 		switch(type){
 			case "c":
 				Vehicle car = new Car();
+				count1++;
 				break;
 			case "b":
 				Vehicle bike = new Bike();
 				break;
+				count2++;
 			case "t":
 				Vehicle truck = new Truck();
+				count3++;
 				break;
 			default:
 				System.out.println("invalid");
 				return;
 		}
+		exc.check(count1,count2,count3);
 
 	}
 }

@@ -33,6 +33,43 @@ class Park extends Building{
 
 }
 
+class Retrieve extends Park{
+    int exitTime;
+    int payment=20;
+    int hours;
+    Retrieve(int time,int ET){
+        super(time);
+        exitTime=ET;
+    }
+
+      void retrievee(){
+        Scanner sc=new Scanner(System.in);
+        System.out.println("enter the exit time");
+        exitTime=sc.nextInt();
+    }
+ 
+    void totalpayment(){
+    hours=exitTime-entryTime;
+    if(hours< 1){
+        payment=20;
+        System.out.println("the payment is"+payment);
+    }
+    else if(1<hours && hours<2){
+       payment+=40;
+       System.out.println("the payment is"+payment);
+    }
+    else if(2 < hours && hours < 4){
+        payment+=60;
+        System.out.println("the payment is"+payment);
+    }
+    else{
+        payment+=1000;
+        System.out.println("the payment is"+payment);
+    }
+
+    }
+}
+
 class OopProject{
 	public static void main(String args[]){
 		Scanner sc = new Scanner(System.in);

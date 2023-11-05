@@ -5,13 +5,35 @@ class Vehicle{
 }
 class Car extends Vehicle{
 	String modelC;
+	Car(){
+		Scanner sc = new Scanner(System.in);		
+		System.out.println("Enter Num plate:");
+		numPlate=sc.nextLine();
+		System.out.println("Enter Model:");
+		modelC=sc.nextLine();
+	}
 }
 class Bike extends Vehicle{
 	String modelB;
+	Bike(){
+		Scanner sc = new Scanner(System.in);		
+		System.out.println("Enter Num plate:");
+		numPlate=sc.nextLine();
+		System.out.println("Enter Model:");
+		modelB=sc.nextLine();
+	}
 }
 class Truck extends Vehicle{
 	String modelT;
+	Truck(){
+		Scanner sc = new Scanner(System.in);		
+		System.out.println("Enter Num plate:");
+		numPlate=sc.nextLine();
+		System.out.println("Enter Model:");
+		modelT=sc.nextLine();
+	}
 }
+
 
 class Building{
 	int floor;

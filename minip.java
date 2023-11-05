@@ -1,4 +1,5 @@
 import java.util.*;
+Scanner sc = new Scanner(System.in);
 
 class Vehicle{
 	String numPlate;

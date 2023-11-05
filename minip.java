@@ -69,10 +69,27 @@ class Retrieve extends Park{
 
     }
 }
+class p{
+Myexceptions parkingfull=new Myexceptions("Slot not available");
+void check(int count1,int count2, int count3) throws Myexceptions{
+try{
+if(count1>10||count2>10||count3>10){
+throw parkingfull;
+}
+System.out.println("Vehicle is parked.");
+}
+catch(Myexceptions e){
+System.out.print(e.getcode());
+}
+}
+}
+
 
 class OopProject{
 	public static void main(String args[]){
 		Scanner sc = new Scanner(System.in);
+		p exc=new p();
+		exc.check(count1,count2,count3);
 		System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
 		String type=sc.nextLine();
 		switch(type){

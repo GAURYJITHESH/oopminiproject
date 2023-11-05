@@ -1,149 +1,129 @@
-import java.util.*;
+import java.util.Scanner;
 
-class Vehicle{
-	String numPlate;
-}
-class Car extends Vehicle{
-	String modelC;
-	Car(){
-		Scanner sc = new Scanner(System.in);		
-		System.out.println("Enter Num plate:");
-		numPlate=sc.nextLine();
-		System.out.println("Enter Model:");
-		modelC=sc.nextLine();
-	}
-}
-class Bike extends Vehicle{
-	String modelB;
-	Bike(){
-		Scanner sc = new Scanner(System.in);		
-		System.out.println("Enter Num plate:");
-		numPlate=sc.nextLine();
-		System.out.println("Enter Model:");
-		modelB=sc.nextLine();
-	}
-}
-class Truck extends Vehicle{
-	String modelT;
-	Truck(){
-		Scanner sc = new Scanner(System.in);		
-		System.out.println("Enter Num plate:");
-		numPlate=sc.nextLine();
-		System.out.println("Enter Model:");
-		modelT=sc.nextLine();
-	}
-}
+// Base class for all vehicles
+class Vehicle {
+    String numPlate;
+    String model;
 
-
-class Building{
-	int floor;
-	int slot;
-}
-
-class Park extends Building{
-    int entryTime;
-    Park(int time){
-        entryTime=time;
-    }
-   
-    void entryy(){
-	Scanner sc = new Scanner(System.in);
-        System.out.println("enter the entry time");
-        entryTime=sc.nextInt();
-    }
-
-}
-
-class Retrieve extends Park{
-	Scanner sc=new Scanner(System.in);
-    int exitTime;
-    int payment=20;
-    int hours;
-    Retrieve(int time,int ET){
-        super(time);
-        exitTime=ET;
-    }
-
-      void retrievee(){
-        Scanner sc=new Scanner(System.in);
-        System.out.println("enter the exit time");
-        exitTime=sc.nextInt();
-    }
- 
-    void totalpayment(){
-    hours=exitTime-entryTime;
-    if(hours< 1){
-        payment=20;
-        System.out.println("the payment is"+payment);
-    }
-    else if(1<hours && hours<2){
-       payment+=40;
-       System.out.println("the payment is"+payment);
-    }
-    else if(2 < hours && hours < 4){
-        payment+=60;
-        System.out.println("the payment is"+payment);
-    }
-    else{
-        payment+=1000;
-        System.out.println("the payment is"+payment);
-    }
-
-    }
-}
-class Myexceptions extends Exception{
-    private String errorcode;
-    Myexceptions(String err){
-        errorcode=err;
-    }
-    String getcode(){
-        return errorcode;
+    // Constructor to initialize vehicle details
+    Vehicle(String numPlate, String model) {
+        this.numPlate = numPlate;
+        this.model = model;
     }
 }
 
-class p{
-Myexceptions parkingfull=new Myexceptions("Slot not available");
-void check(int count1,int count2, int count3) throws Myexceptions{
-try{
-if(count1>10||count2>10||count3>10){
-throw parkingfull;
-}
-System.out.println("Vehicle is parked.");
-}
-catch(Myexceptions e){
-System.out.print(e.getcode());
-}
-}
+// Derived classes for specific vehicle types
+class Car extends Vehicle {
+    Car(String numPlate, String model) {
+        super(numPlate, model);
+    }
 }
 
+class Bike extends Vehicle {
+    Bike(String numPlate, String model) {
+        super(numPlate, model);
+    }
+}
 
-class OopProject{
-	public static void main(String args[]) throws Myexceptions{
-		Scanner sc = new Scanner(System.in);
-		p exc=new p();
-		int count1=0;
-		int count2=0;
-		int count3=0;
-		System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
-		String type=sc.nextLine();
-		switch(type){
-			case "c":
-				Vehicle car = new Car();
-				count1++;
-				break;
-			case "b":
-				Vehicle bike = new Bike();
-				count2++;
-                break;
-			case "t":
-				Vehicle truck = new Truck();
-				count3++;
-				break;
-			default:
-				System.out.println("invalid");
-				return;
-		}
-		exc.check(count1,count2,count3);
+class Truck extends Vehicle {
+    Truck(String numPlate, String model) {
+        super(numPlate, model);
+    }
+}
 
-	}
+// ParkingSlot class to represent individual parking slots
+class ParkingSlot {
+    private Vehicle vehicle;
+
+    // Method to park a vehicle in the slot
+    void parkVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    // Method to retrieve parked vehicle
+    Vehicle retrieveVehicle() {
+        Vehicle parkedVehicle = this.vehicle;
+        this.vehicle = null; // Clear the slot after retrieving the vehicle
+        return parkedVehicle;
+    }
+
+    // Method to check if the slot is occupied
+    boolean isOccupied() {
+        return this.vehicle != null;
+    }
+}
+
+// ParkingLot class to manage multiple parking slots
+class ParkingLot {
+    private ParkingSlot[] slots;
+
+    // Constructor to initialize parking slots
+    ParkingLot(int capacity) {
+        slots = new ParkingSlot[capacity];
+        for (int i = 0; i < capacity; i++) {
+            slots[i] = new ParkingSlot();
+        }
+    }
+
+    // Method to find the first available slot for parking
+    int findAvailableSlot() {
+        for (int i = 0; i < slots.length; i++) {
+            if (!slots[i].isOccupied()) {
+                return i;
+            }
+        }
+        return -1; // No available slots
+    }
+
+    // Method to park a vehicle in the parking lot
+    void parkVehicle(Vehicle vehicle) throws Exception {
+        int slotIndex = findAvailableSlot();
+        if (slotIndex != -1) {
+            slots[slotIndex].parkVehicle(vehicle);
+        } else {
+            throw new Exception("Parking lot is full.");
+        }
+    }
+}
+
+// Main class for the parking management system
+public class OopProject {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Initialize parking lot with 20 slots
+        ParkingLot parkingLot = new ParkingLot(20);
+
+        System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
+        String type = sc.nextLine();
+
+        System.out.println("Enter Num plate:");
+        String numPlate = sc.nextLine();
+        System.out.println("Enter Model:");
+        String model = sc.nextLine();
+
+        try {
+            Vehicle vehicle = null;
+            switch (type) {
+                case "c":
+                    vehicle = new Car(numPlate, model);
+                    break;
+                case "b":
+                    vehicle = new Bike(numPlate, model);
+                    break;
+                case "t":
+                    vehicle = new Truck(numPlate, model);
+                    break;
+                default:
+                    System.out.println("Invalid vehicle type.");
+                    return;
+            }
+
+            // Park the vehicle
+            parkingLot.parkVehicle(vehicle);
+            System.out.println("Vehicle parked successfully.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 }

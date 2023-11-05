@@ -3,28 +3,30 @@ import java.util.Scanner;
 class Vehicle {
     String numPlate;
     String model;
+    int entryTime;
 
-    Vehicle(String numPlate, String model) {
+    Vehicle(String numPlate, String model, int entryTime) {
         this.numPlate = numPlate;
         this.model = model;
+        this.entryTime = entryTime;
     }
 }
 
 class Car extends Vehicle {
-    Car(String numPlate, String model) {
-        super(numPlate, model);
+    Car(String numPlate, String model, int entryTime) {
+        super(numPlate, model, entryTime);
     }
 }
 
 class Bike extends Vehicle {
-    Bike(String numPlate, String model) {
-        super(numPlate, model);
+    Bike(String numPlate, String model, int entryTime) {
+        super(numPlate, model, entryTime);
     }
 }
 
 class Truck extends Vehicle {
-    Truck(String numPlate, String model) {
-        super(numPlate, model);
+    Truck(String numPlate, String model, int entryTime) {
+        super(numPlate, model, entryTime);
     }
 }
 
@@ -90,7 +92,7 @@ class ParkingFloor {
         }
     }
 
-    Vehicle retrieveVehicle(int slotNumber, int exitTime) {
+    Vehicle retrieveVehicle(int slotNumber, int exitTime, String numPlate) {
         ParkingSlot[] slots = null;
         String vehicleType = "";
 
@@ -106,18 +108,22 @@ class ParkingFloor {
         }
 
         if (slots != null) {
-            Vehicle vehicle = slots[slotNumber].retrieveVehicle();
-            int hours = (exitTime - 1500) / 100; // Assuming entry time is always before 1500 hours
-            int basePrice = (vehicleType.equals("Bike")) ? 20 : ((vehicleType.equals("Car")) ? 50 : 100);
-            int additionalFee = (hours <= 4) ? (hours * 20) : 1000;
-            int totalPayment = basePrice + additionalFee;
-            System.out.println(vehicleType + " retrieved successfully from Slot " + slotNumber);
-            System.out.println("Total Payment: Rs. " + totalPayment);
-            return vehicle;
+            for (ParkingSlot slot : slots) {
+                if (slot.isOccupied() && slot.retrieveVehicle().numPlate.equals(numPlate)) {
+                    int hours = (exitTime - slot.retrieveVehicle().entryTime) / 100; // Assuming entry time is always before 1500 hours
+                    int basePrice = (vehicleType.equals("Bike")) ? 20 : ((vehicleType.equals("Car")) ? 50 : 100);
+                    int additionalFee = (hours <= 4) ? (hours * 20) : 1000;
+                    int totalPayment = basePrice + additionalFee;
+                    System.out.println(vehicleType + " with Num Plate " + numPlate + " retrieved successfully from Slot " + slotNumber);
+                    System.out.println("Total Payment: Rs. " + totalPayment);
+                    return slot.retrieveVehicle();
+                }
+            }
+            System.out.println("Invalid number plate or no matching vehicle found at this slot.");
         } else {
             System.out.println("Invalid slot number or no vehicle parked at this slot.");
-            return null;
         }
+        return null;
     }
 }
 
@@ -131,21 +137,21 @@ class ParkingLot {
         }
     }
 
-    void parkCar(Car car, int floorNumber, int slotNumber) throws Exception {
+    void parkCar(Car car, int floorNumber, int slotNumber, int entryTime) throws Exception {
         floors[floorNumber].parkCar(car, slotNumber);
     }
 
-    void parkBike(Bike bike, int floorNumber, int slotNumber) throws Exception {
+    void parkBike(Bike bike, int floorNumber, int slotNumber, int entryTime) throws Exception {
         floors[floorNumber].parkBike(bike, slotNumber);
     }
 
-    void parkTruck(Truck truck, int floorNumber, int slotNumber) throws Exception {
+    void parkTruck(Truck truck, int floorNumber, int slotNumber, int entryTime) throws Exception {
         floors[floorNumber].parkTruck(truck, slotNumber);
     }
 
-    Vehicle retrieveVehicle(int floorNumber, int slotNumber, int exitTime) {
+    Vehicle retrieveVehicle(int floorNumber, int slotNumber, int exitTime, String numPlate) {
         if (floorNumber >= 0 && floorNumber < floors.length) {
-            return floors[floorNumber].retrieveVehicle(slotNumber, exitTime);
+            return floors[floorNumber].retrieveVehicle(slotNumber, exitTime, numPlate);
         } else {
             System.out.println("Invalid floor number.");
             return null;
@@ -176,13 +182,15 @@ public class OopProject {
                     String carNumPlate = sc.nextLine();
                     System.out.println("Enter Model for car:");
                     String carModel = sc.nextLine();
-                    Car car = new Car(carNumPlate, carModel);
+                    System.out.println("Enter Entry Time (in military hours):");
+                    int carEntryTime = sc.nextInt();
+                    Car car = new Car(carNumPlate, carModel, carEntryTime);
                     try {
                         System.out.println("Enter Floor Number (0, 1, 2):");
                         int floorNumber = sc.nextInt();
                         System.out.println("Enter Slot Number (0-11):");
                         int slotNumber = sc.nextInt();
-                        parkingLot.parkCar(car, floorNumber, slotNumber);
+                        parkingLot.parkCar(car, floorNumber, slotNumber, carEntryTime);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -193,13 +201,15 @@ public class OopProject {
                     String bikeNumPlate = sc.nextLine();
                     System.out.println("Enter Model for bike:");
                     String bikeModel = sc.nextLine();
-                    Bike bike = new Bike(bikeNumPlate, bikeModel);
+                    System.out.println("Enter Entry Time (in military hours):");
+                    int bikeEntryTime = sc.nextInt();
+                    Bike bike = new Bike(bikeNumPlate, bikeModel, bikeEntryTime);
                     try {
                         System.out.println("Enter Floor Number (0, 1, 2):");
                         int floorNumber = sc.nextInt();
                         System.out.println("Enter Slot Number (0-14):");
                         int slotNumber = sc.nextInt();
-                        parkingLot.parkBike(bike, floorNumber, slotNumber);
+                        parkingLot.parkBike(bike, floorNumber, slotNumber, bikeEntryTime);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -210,13 +220,15 @@ public class OopProject {
                     String truckNumPlate = sc.nextLine();
                     System.out.println("Enter Model for truck:");
                     String truckModel = sc.nextLine();
-                    Truck truck = new Truck(truckNumPlate, truckModel);
+                    System.out.println("Enter Entry Time (in military hours):");
+                    int truckEntryTime = sc.nextInt();
+                    Truck truck = new Truck(truckNumPlate, truckModel, truckEntryTime);
                     try {
                         System.out.println("Enter Floor Number (0, 1, 2):");
                         int floorNumber = sc.nextInt();
                         System.out.println("Enter Slot Number (0-2):");
                         int slotNumber = sc.nextInt();
-                        parkingLot.parkTruck(truck, floorNumber, slotNumber);
+                        parkingLot.parkTruck(truck, floorNumber, slotNumber, truckEntryTime);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -229,7 +241,10 @@ public class OopProject {
                     int slotNumber = sc.nextInt();
                     System.out.println("Enter Exit Time (in military hours):");
                     int exitTime = sc.nextInt();
-                    parkingLot.retrieveVehicle(floorNumber, slotNumber, exitTime);
+                    sc.nextLine(); // Consume the newline character after reading the exit time
+                    System.out.println("Enter Num Plate of the vehicle:");
+                    String numPlate = sc.nextLine();
+                    parkingLot.retrieveVehicle(floorNumber, slotNumber, exitTime, numPlate);
                     break;
 
                 case 5:

@@ -5,7 +5,6 @@ class Vehicle {
     String numPlate;
     String model;
 
-    // Constructor to initialize vehicle details
     Vehicle(String numPlate, String model) {
         this.numPlate = numPlate;
         this.model = model;
@@ -35,39 +34,45 @@ class Truck extends Vehicle {
 class ParkingSlot {
     private Vehicle vehicle;
 
-    // Method to park a vehicle in the slot
     void parkVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
-    // Method to retrieve parked vehicle
     Vehicle retrieveVehicle() {
         Vehicle parkedVehicle = this.vehicle;
         this.vehicle = null; // Clear the slot after retrieving the vehicle
         return parkedVehicle;
     }
 
-    // Method to check if the slot is occupied
     boolean isOccupied() {
         return this.vehicle != null;
     }
 }
 
-// ParkingLot class to manage multiple parking slots
-class ParkingLot {
+// ParkingFloor class to manage parking slots for a specific floor
+class ParkingFloor {
     private ParkingSlot[] slots;
 
-    // Constructor to initialize parking slots
-    ParkingLot(int capacity) {
-        slots = new ParkingSlot[capacity];
-        for (int i = 0; i < capacity; i++) {
+    ParkingFloor(int carSlots, int bikeSlots, int truckSlots) {
+        int totalSlots = carSlots + bikeSlots + truckSlots;
+        slots = new ParkingSlot[totalSlots];
+        for (int i = 0; i < totalSlots; i++) {
             slots[i] = new ParkingSlot();
         }
     }
 
-    // Method to find the first available slot for parking
-    int findAvailableSlot() {
-        for (int i = 0; i < slots.length; i++) {
+    int findAvailableSlot(int carSlots, int bikeSlots, int truckSlots) {
+        for (int i = 0; i < carSlots; i++) {
+            if (!slots[i].isOccupied()) {
+                return i;
+            }
+        }
+        for (int i = carSlots; i < carSlots + bikeSlots; i++) {
+            if (!slots[i].isOccupied()) {
+                return i;
+            }
+        }
+        for (int i = carSlots + bikeSlots; i < carSlots + bikeSlots + truckSlots; i++) {
             if (!slots[i].isOccupied()) {
                 return i;
             }
@@ -75,13 +80,33 @@ class ParkingLot {
         return -1; // No available slots
     }
 
-    // Method to park a vehicle in the parking lot
-    void parkVehicle(Vehicle vehicle) throws Exception {
-        int slotIndex = findAvailableSlot();
+    void parkVehicle(Vehicle vehicle, int carSlots, int bikeSlots, int truckSlots) throws Exception {
+        int slotIndex = findAvailableSlot(carSlots, bikeSlots, truckSlots);
         if (slotIndex != -1) {
             slots[slotIndex].parkVehicle(vehicle);
+            System.out.println("Vehicle parked successfully in Slot " + slotIndex);
         } else {
-            throw new Exception("Parking lot is full.");
+            throw new Exception("Parking floor is full. Please choose another floor.");
+        }
+    }
+}
+
+// ParkingLot class to manage multiple parking floors
+class ParkingLot {
+    private ParkingFloor[] floors;
+
+    ParkingLot(int floorsCount, int carSlots, int bikeSlots, int truckSlots) {
+        floors = new ParkingFloor[floorsCount];
+        for (int i = 0; i < floorsCount; i++) {
+            floors[i] = new ParkingFloor(carSlots, bikeSlots, truckSlots);
+        }
+    }
+
+    void parkVehicle(Vehicle vehicle, int floorNumber, int carSlots, int bikeSlots, int truckSlots) throws Exception {
+        if (floorNumber >= 0 && floorNumber < floors.length) {
+            floors[floorNumber].parkVehicle(vehicle, carSlots, bikeSlots, truckSlots);
+        } else {
+            throw new Exception("Invalid floor number.");
         }
     }
 }
@@ -91,8 +116,8 @@ public class OopProject {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Initialize parking lot with 20 slots
-        ParkingLot parkingLot = new ParkingLot(20);
+        // Initialize parking lot with 3 floors, each having 12 car slots, 15 bike slots, and 3 truck slots
+        ParkingLot parkingLot = new ParkingLot(3, 12, 15, 3);
 
         System.out.println("Enter type of vehicle: (c for car, t for truck, b for bike)");
         String type = sc.nextLine();
@@ -101,6 +126,9 @@ public class OopProject {
         String numPlate = sc.nextLine();
         System.out.println("Enter Model:");
         String model = sc.nextLine();
+
+        System.out.println("Enter Floor Number (0, 1, 2):");
+        int floorNumber = sc.nextInt();
 
         try {
             Vehicle vehicle = null;
@@ -120,8 +148,7 @@ public class OopProject {
             }
 
             // Park the vehicle
-            parkingLot.parkVehicle(vehicle);
-            System.out.println("Vehicle parked successfully.");
+            parkingLot.parkVehicle(vehicle, floorNumber, 12, 15, 3);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
